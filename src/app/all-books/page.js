@@ -1,9 +1,11 @@
 import BookCard from "@/components/book-card";
 
 export default async function AllBooksPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/all-books`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/all-books`, {
+    cache: "no-store",
+  });
   const books = await res.json();
-  console.log(books);
+  // console.log(books);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">

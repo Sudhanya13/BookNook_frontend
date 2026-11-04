@@ -344,7 +344,7 @@ const NewArrivals = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/new-arrivals")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/new-arrivals`)
       .then((res) => res.json())
       .then((data) => {
         setBooks(Array.isArray(data) ? data : []);
