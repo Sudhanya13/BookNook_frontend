@@ -161,7 +161,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, LogIn, UserPlus, LogOut } from "lucide-react";
+import { BookOpen, LogIn, UserPlus, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -258,7 +258,7 @@ export default function Navbar() {
               {user ? (
                 /* User is logged in: Show Avatar Popover */
                 <Popover>
-                  <PopoverTrigger>
+                  <PopoverTrigger asChild>
                     <Avatar className="size-9 cursor-pointer">
                       <AvatarImage
                         referrerPolicy="no-referrer"
@@ -271,7 +271,7 @@ export default function Navbar() {
                     </Avatar>
                   </PopoverTrigger>
                   <PopoverContent className="w-56" align="end">
-                    <PopoverHeader className="space-y-2 text-left">
+                    <PopoverHeader className="space-y-1 text-left">
                       <PopoverTitle className="text-sm font-semibold">
                         {user.name}
                       </PopoverTitle>
@@ -279,7 +279,19 @@ export default function Navbar() {
                         {user.email}
                       </PopoverDescription>
                     </PopoverHeader>
-                    <div className="mt-4 pt-2 border-t">
+
+                    <div className="mt-3 space-y-1 pt-2 border-t">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start gap-2 font-normal"
+                        nativeButton={false}
+                        render={<Link href="/profile" />}
+                      >
+                        <User className="size-4" />
+                        My Profile
+                      </Button>
+
                       <Button
                         variant="destructive"
                         size="sm"
