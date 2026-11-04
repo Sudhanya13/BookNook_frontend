@@ -38,7 +38,7 @@
 //     </Card>
 //   );
 // }
-
+export const dynamic = "force-dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

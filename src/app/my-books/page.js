@@ -62,6 +62,7 @@ import toast from "react-hot-toast";
 
 import { authClient } from "@/lib/auth-client";
 import { Button, buttonVariants } from "@/components/ui/button";
+export const dynamic = "force-dynamic";
 
 import {
   AlertDialog,

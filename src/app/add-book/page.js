@@ -1,5 +1,5 @@
 "use client";
-
+export const dynamic = "force-dynamic";
 import { useState } from "react";
 import { CheckCircle2, User, Mail, BookOpen } from "lucide-react";
 import toast from "react-hot-toast";
