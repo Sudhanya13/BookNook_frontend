@@ -1,7 +1,7 @@
 import BookCard from "@/components/book-card";
 
 export default async function AllBooksPage() {
-  const res = await fetch("http://localhost:5000/all-books");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/all-books`);
   const books = await res.json();
   console.log(books);
 

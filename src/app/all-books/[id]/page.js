@@ -28,12 +28,15 @@ export default async function BookDetailsPage({ params }) {
 
   console.log({ jwtToken });
   // Fetch the specific book from your Express backend
-  const res = await fetch(`http://localhost:5000/all-books/${id}`, {
-    cache: "no-store",
-    headers: {
-      authorization: `Bearer ${jwtToken?.token}`,
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/all-books/${id}`,
+    {
+      cache: "no-store",
+      headers: {
+        authorization: `Bearer ${jwtToken?.token}`,
+      },
     },
-  });
+  );
 
   if (!res.ok) {
     notFound();

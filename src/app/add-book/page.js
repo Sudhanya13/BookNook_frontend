@@ -59,13 +59,16 @@ export default function AddBookPage() {
     try {
       setSubmitting(true);
 
-      const response = await fetch("http://localhost:5000/add-book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/add-book`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookData),
         },
-        body: JSON.stringify(bookData),
-      });
+      );
 
       const result = await response.json();
 

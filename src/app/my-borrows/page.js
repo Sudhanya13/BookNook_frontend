@@ -173,6 +173,7 @@ import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function MyBorrowsPage() {
   const { data: session, isPending } = authClient.useSession();
@@ -194,7 +195,7 @@ export default function MyBorrowsPage() {
     async function fetchBorrows() {
       try {
         const response = await fetch(
-          `http://localhost:5000/my-borrows?email=${encodeURIComponent(
+          `${process.env.NEXT_PUBLIC_API_URL}/my-borrows?email=${encodeURIComponent(
             user.email,
           )}`,
         );
@@ -221,9 +222,12 @@ export default function MyBorrowsPage() {
     try {
       setReturningId(id);
 
-      const response = await fetch(`http://localhost:5000/my-borrows/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       const result = await response.json();
 
@@ -313,9 +317,11 @@ export default function MyBorrowsPage() {
               {borrows.map((borrow) => (
                 <tr key={borrow._id} className="border-t">
                   <td className="p-4">
-                    <img
+                    <Image
                       src={borrow.bookImage}
                       alt={borrow.bookTitle}
+                      width={55}
+                      height={45}
                       className="h-16 w-12 rounded object-cover"
                     />
                   </td>

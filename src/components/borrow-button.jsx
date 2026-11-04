@@ -123,17 +123,20 @@ export default function BorrowButton({ bookId }) {
     try {
       setBorrowing(true);
 
-      const response = await fetch("http://localhost:5000/my-borrows", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/my-borrows`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bookId,
+            userName: user.name,
+            userEmail: user.email,
+          }),
         },
-        body: JSON.stringify({
-          bookId,
-          userName: user.name,
-          userEmail: user.email,
-        }),
-      });
+      );
 
       const result = await response.json();
 
