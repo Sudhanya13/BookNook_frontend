@@ -6,6 +6,7 @@ import BorrowButton from "@/components/borrow-button";
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+export const dynamic = "force-dynamic";
 
 // // Dynamic route: params and usePathname() (navbar) are runtime data, and
 // // notFound() must produce a real 404 — so this route renders per request
