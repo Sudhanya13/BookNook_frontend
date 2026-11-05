@@ -153,14 +153,28 @@ export default function MyBooksPage() {
   // Delete book
   async function handleDelete(id) {
     setDeletingId(id);
-
     try {
+      const sessionData = await authClient.getSession();
+      const token = sessionData?.data?.token || sessionData?.token || "";
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/all-books/${id}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
         },
       );
+
+      // try {
+      //   const response = await fetch(
+      //     `${process.env.NEXT_PUBLIC_API_URL}/all-books/${id}`,
+      //     {
+      //       method: "DELETE",
+      //     },
+      //   );
 
       const result = await response.json();
 
@@ -184,6 +198,8 @@ export default function MyBooksPage() {
   // Update book
   async function handleUpdate(e) {
     e.preventDefault();
+    const sessionData = await authClient.getSession();
+    const token = sessionData?.data?.token || sessionData?.token || "";
 
     if (!editingBook) return;
 
@@ -196,7 +212,9 @@ export default function MyBooksPage() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
+          credentials: "include",
           body: JSON.stringify({
             title: editingBook.title,
             author: editingBook.author,

@@ -230,11 +230,18 @@ export default function MyBorrowsPage() {
   async function handleReturn(id) {
     try {
       setReturningId(id);
+      const sessionData = await authClient.getSession();
+      const token = sessionData?.data?.token || sessionData?.token || "";
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${id}`,
         {
           method: "DELETE",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
         },
       );
 
