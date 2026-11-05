@@ -32,14 +32,14 @@ export default async function BookDetailsPage({ params }) {
     headers: await headers(),
   });
 
-  console.log({ jwtToken });
+  console.log(jwtToken.token);
   // Fetch the specific book from your Express backend
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/all-books/${id}`,
     {
       cache: "no-store",
       headers: {
-        authorization: `Bearer ${jwtToken?.token}`,
+        Authorization: `Bearer ${jwtToken?.token}`,
       },
     },
   );
@@ -119,6 +119,7 @@ export default async function BookDetailsPage({ params }) {
 
           <div className="space-y-2">
             <BorrowButton
+              token={jwtToken?.token}
               bookId={book.id || book._id}
               copies={book.copies ?? 0}
             />

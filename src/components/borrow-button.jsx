@@ -114,7 +114,7 @@ import { authClient } from "@/lib/auth-client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-export default function BorrowButton({ bookId, copies }) {
+export default function BorrowButton({ bookId, copies, token }) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
@@ -142,6 +142,8 @@ export default function BorrowButton({ bookId, copies }) {
         {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${token}`,
+
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
