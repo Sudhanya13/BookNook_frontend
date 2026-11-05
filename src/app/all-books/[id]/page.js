@@ -23,6 +23,11 @@ import { headers } from "next/headers";
 
 export default async function BookDetailsPage({ params }) {
   const { id } = await params;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const user = session?.user;
   const jwtToken = await auth.api.getToken({
     headers: await headers(),
   });
@@ -86,12 +91,36 @@ export default async function BookDetailsPage({ params }) {
               <dd className="font-medium">{formatDate(book.createdAt)}</dd>
             </div>
           </dl>
+          {/* User & Book Details */}
+          <div className="rounded-2xl border bg-muted/30 p-5 space-y-4">
+            <h2 className="text-lg font-semibold">Details</h2>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-1">
+                <p className="text-sm text-muted-foreground">User Name</p>
+                <p className="font-medium">{user?.name || "Not logged in"}</p>
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-sm text-muted-foreground">User Email</p>
+                <p className="font-medium break-all">
+                  {user?.email || "Not logged in"}
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-sm text-muted-foreground">
+                  Available Copies
+                </p>
+                <p className="text-xl font-bold text-primary">
+                  {book.copies ?? 0}
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className="space-y-2">
             <BorrowButton bookId={book.id || book._id} />
-            <p className="text-xs text-muted-foreground">
-              Demo UI — borrowing is not saved anywhere yet.
-            </p>
           </div>
         </div>
       </div>
