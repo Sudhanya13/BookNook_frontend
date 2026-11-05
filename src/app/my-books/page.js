@@ -122,6 +122,13 @@ export default function MyBooksPage() {
           `${process.env.NEXT_PUBLIC_API_URL}/my-books?email=${encodeURIComponent(
             user.email,
           )}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token || ""}`,
+            },
+            credentials: "include",
+          },
         );
 
         if (!response.ok) {
@@ -146,9 +153,12 @@ export default function MyBooksPage() {
     setDeletingId(id);
 
     try {
-      const response = await fetch(`http://localhost:5000/all-books/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/all-books/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       const result = await response.json();
 

@@ -198,6 +198,13 @@ export default function MyBorrowsPage() {
           `${process.env.NEXT_PUBLIC_API_URL}/my-borrows?email=${encodeURIComponent(
             user.email,
           )}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token || ""}`,
+            },
+            credentials: "include",
+          },
         );
 
         if (!response.ok) {
