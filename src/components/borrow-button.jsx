@@ -93,6 +93,17 @@
 // }
 
 "use client";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -108,6 +119,7 @@ export default function BorrowButton({ bookId }) {
 
   const [borrowed, setBorrowed] = useState(false);
   const [borrowing, setBorrowing] = useState(false);
+  const [open, setOpen] = useState(false);
 
   async function handleBorrow() {
     if (!user?.name || !user?.email) {
@@ -184,9 +196,44 @@ export default function BorrowButton({ bookId }) {
   }
 
   return (
-    <Button size="lg" onClick={handleBorrow} disabled={borrowing}>
-      <BookOpen className="mr-2 size-4" />
-      {borrowing ? "Borrowing..." : "Borrow Book"}
-    </Button>
+    <>
+      <Button size="lg" onClick={() => setOpen(true)}>
+        <BookOpen className="mr-2 size-4" />
+        Borrow Book
+      </Button>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Your Borrowing</DialogTitle>
+            <DialogDescription>
+              Review your information before borrowing.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Your Name</Label>
+              <Input value={user?.name || ""} readOnly />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Email Address</Label>
+              <Input value={user?.email || ""} readOnly />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+
+            <Button onClick={handleBorrow} disabled={borrowing}>
+              {borrowing ? "Borrowing..." : "Confirm Borrow"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

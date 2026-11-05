@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { CalendarDays, Layers } from "lucide-react";
-import { formatDate, getBookById } from "@/lib/books";
+import { Layers } from "lucide-react";
+// import { formatDate, getBookById } from "@/lib/books";
 import BorrowButton from "@/components/borrow-button";
 
 import { auth } from "@/lib/auth";
@@ -85,11 +85,11 @@ export default async function BookDetailsPage({ params }) {
               <dt className="text-muted-foreground">Category</dt>
               <dd className="font-medium">{book.category}</dd>
             </div>
-            <div className="flex items-center gap-2.5">
+            {/* <div className="flex items-center gap-2.5">
               <CalendarDays className="size-4 text-muted-foreground" />
               <dt className="text-muted-foreground">Added</dt>
               <dd className="font-medium">{formatDate(book.createdAt)}</dd>
-            </div>
+            </div> */}
           </dl>
           {/* User & Book Details */}
           <div className="rounded-2xl border bg-muted/30 p-5 space-y-4">
@@ -109,9 +109,7 @@ export default async function BookDetailsPage({ params }) {
               </div>
 
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">
-                  Available Copies
-                </p>
+                <p className="text-sm text-muted-foreground">Copies left</p>
                 <p className="text-xl font-bold text-primary">
                   {book.copies ?? 0}
                 </p>
