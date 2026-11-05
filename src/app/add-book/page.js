@@ -48,6 +48,7 @@ export default function AddBookPage() {
       title: formData.get("title"),
       author: formData.get("author"),
       category: formData.get("category"),
+      copies: Number(formData.get("copies")),
       cover: formData.get("cover"),
       description: formData.get("description"),
       addedBy: {
@@ -184,6 +185,21 @@ export default function AddBookPage() {
                     </option>
                   ))}
                 </select>
+              </div>
+              {/* Number of Copies */}
+              <div className="space-y-2">
+                <Label htmlFor="copies">Number of Copies</Label>
+                <Input
+                  id="copies"
+                  name="copies"
+                  type="number"
+                  min="1"
+                  step="1"
+                  required
+                  defaultValue="1"
+                  placeholder="Enter number of copies"
+                  className={FIELD_CLASSES}
+                />
               </div>
 
               <div className="space-y-2">
