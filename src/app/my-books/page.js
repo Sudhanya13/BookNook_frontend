@@ -111,6 +111,8 @@ export default function MyBooksPage() {
     }
 
     async function fetchMyBooks() {
+      const sessionData = await authClient.getSession();
+      const token = sessionData?.data?.token || sessionData?.token || "";
       try {
         const response = await fetch(
           // `${process.env.NEXT_PUBLIC_API_URL}/my-books`,

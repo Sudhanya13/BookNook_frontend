@@ -193,6 +193,8 @@ export default function MyBorrowsPage() {
     }
 
     async function fetchBorrows() {
+      const sessionData = await authClient.getSession();
+      const token = sessionData?.data?.token || sessionData?.token || "";
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/my-borrows?email=${encodeURIComponent(
@@ -201,7 +203,7 @@ export default function MyBorrowsPage() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization:  `Bearer ${token}`,,
+              Authorization: `Bearer ${token}`,
             },
             credentials: "include",
           },
