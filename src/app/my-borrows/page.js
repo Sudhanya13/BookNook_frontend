@@ -193,8 +193,10 @@ export default function MyBorrowsPage() {
     }
 
     async function fetchBorrows() {
-      const sessionData = await authClient.getSession();
-      const token = sessionData?.data?.token || sessionData?.token || "";
+      const { data } = await authClient.token();
+
+      const token = data?.token;
+      console.log(token);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/my-borrows?email=${encodeURIComponent(
@@ -205,7 +207,6 @@ export default function MyBorrowsPage() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            credentials: "include",
           },
         );
 
@@ -230,8 +231,10 @@ export default function MyBorrowsPage() {
   async function handleReturn(id) {
     try {
       setReturningId(id);
-      const sessionData = await authClient.getSession();
-      const token = sessionData?.data?.token || sessionData?.token || "";
+      const { data } = await authClient.token();
+
+      const token = data?.token;
+      console.log(token);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${id}`,
@@ -241,7 +244,6 @@ export default function MyBorrowsPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          credentials: "include",
         },
       );
 

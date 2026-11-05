@@ -111,8 +111,10 @@ export default function MyBooksPage() {
     }
 
     async function fetchMyBooks() {
-      const sessionData = await authClient.getSession();
-      const token = sessionData?.data?.token || sessionData?.token || "";
+      const { data } = await authClient.token();
+
+      const token = data?.token;
+      console.log(token);
       try {
         const response = await fetch(
           // `${process.env.NEXT_PUBLIC_API_URL}/my-books`,
@@ -129,7 +131,6 @@ export default function MyBooksPage() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            credentials: "include",
           },
         );
 
@@ -154,8 +155,10 @@ export default function MyBooksPage() {
   async function handleDelete(id) {
     setDeletingId(id);
     try {
-      const sessionData = await authClient.getSession();
-      const token = sessionData?.data?.token || sessionData?.token || "";
+      const { data } = await authClient.token();
+
+      const token = data?.token;
+      console.log(token);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/all-books/${id}`,
@@ -164,7 +167,6 @@ export default function MyBooksPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          credentials: "include",
         },
       );
 
@@ -198,8 +200,10 @@ export default function MyBooksPage() {
   // Update book
   async function handleUpdate(e) {
     e.preventDefault();
-    const sessionData = await authClient.getSession();
-    const token = sessionData?.data?.token || sessionData?.token || "";
+    const { data } = await authClient.token();
+
+    const token = data?.token;
+    console.log(token);
 
     if (!editingBook) return;
 
@@ -214,7 +218,7 @@ export default function MyBooksPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          credentials: "include",
+
           body: JSON.stringify({
             title: editingBook.title,
             author: editingBook.author,
