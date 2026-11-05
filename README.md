@@ -4,7 +4,7 @@ A modern and user-friendly Book Library Management System where users can explor
 
 ## 🌐 Live Website
 
-**Live Site:** [https://my-library-five-theta.vercel.app/](https://your-live-site-url.vercel.app)
+**Live Site:** [https://my-library-five-theta.vercel.app/]
 
 ## ✨ Features
 
