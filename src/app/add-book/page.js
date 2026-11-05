@@ -59,12 +59,18 @@ export default function AddBookPage() {
 
     try {
       setSubmitting(true);
+      const { data } = await authClient.token();
+
+      const token = data?.token;
+      console.log(token);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/add-book`,
         {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${token}`,
+
             "Content-Type": "application/json",
           },
           body: JSON.stringify(bookData),
