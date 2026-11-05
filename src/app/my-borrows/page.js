@@ -201,7 +201,7 @@ export default function MyBorrowsPage() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token || ""}`,
+              Authorization:  `Bearer ${token}`,,
             },
             credentials: "include",
           },
