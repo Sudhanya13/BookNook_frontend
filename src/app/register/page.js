@@ -4,6 +4,7 @@ import { BookOpen } from "lucide-react";
 import { RegisterForm } from "@/components/Register-form";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation"; // Better for client components
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -29,7 +30,8 @@ export default function RegisterPage() {
     if (data) {
       console.log("User:", data.user);
       console.log("Token:", data.token);
-      router.push("/"); // Safer for client components than server-side redirect
+      toast.success("Registration successful! Please login.");
+      router.push("/login"); // Safer for client components than server-side redirect
     }
   };
 
