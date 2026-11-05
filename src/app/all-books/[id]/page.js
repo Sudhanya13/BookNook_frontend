@@ -118,7 +118,10 @@ export default async function BookDetailsPage({ params }) {
           </div>
 
           <div className="space-y-2">
-            <BorrowButton bookId={book.id || book._id} />
+            <BorrowButton
+              bookId={book.id || book._id}
+              copies={book.copies ?? 0}
+            />
           </div>
         </div>
       </div>

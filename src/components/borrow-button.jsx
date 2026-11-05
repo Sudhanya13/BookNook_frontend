@@ -112,8 +112,10 @@ import toast from "react-hot-toast";
 
 import { authClient } from "@/lib/auth-client";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-export default function BorrowButton({ bookId }) {
+export default function BorrowButton({ bookId, copies }) {
+  const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
@@ -157,6 +159,9 @@ export default function BorrowButton({ bookId }) {
       }
 
       setBorrowed(true);
+      setOpen(false);
+      router.refresh();
+
       toast.success("Book borrowed successfully!");
     } catch (error) {
       console.error("Borrow error:", error);
@@ -170,6 +175,13 @@ export default function BorrowButton({ bookId }) {
     return (
       <Button size="lg" disabled>
         Loading...
+      </Button>
+    );
+  }
+  if (copies <= 0) {
+    return (
+      <Button size="lg" disabled>
+        Not Available
       </Button>
     );
   }
@@ -197,9 +209,9 @@ export default function BorrowButton({ bookId }) {
 
   return (
     <>
-      <Button size="lg" onClick={() => setOpen(true)}>
+      <Button size="lg" onClick={() => setOpen(true)} disabled={copies <= 0}>
         <BookOpen className="mr-2 size-4" />
-        Borrow Book
+        {copies <= 0 ? "Not Available" : "Borrow Book"}
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>

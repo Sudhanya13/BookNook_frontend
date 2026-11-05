@@ -54,6 +54,19 @@
 
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -85,6 +98,8 @@ export default function MyBooksPage() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
+  const [editingBook, setEditingBook] = useState(null);
+  const [updating, setUpdating] = useState(false);
 
   // Fetch books added by logged-in user
   useEffect(() => {
@@ -151,6 +166,55 @@ export default function MyBooksPage() {
       toast.error(error.message || "Could not delete book.");
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  // Update book
+  async function handleUpdate(e) {
+    e.preventDefault();
+
+    if (!editingBook) return;
+
+    try {
+      setUpdating(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/all-books/${editingBook._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: editingBook.title,
+            author: editingBook.author,
+            category: editingBook.category,
+            cover: editingBook.cover,
+            description: editingBook.description,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to update book.");
+      }
+
+      setBooks((previousBooks) =>
+        previousBooks.map((book) =>
+          book._id === editingBook._id ? { ...book, ...editingBook } : book,
+        ),
+      );
+
+      setEditingBook(null);
+
+      toast.success("Book updated successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Could not update book.");
+    } finally {
+      setUpdating(false);
     }
   }
 
@@ -246,12 +310,21 @@ export default function MyBooksPage() {
 
                 {/* Edit and Delete */}
                 <div className="flex justify-end gap-2 pt-2">
-                  <Button
+                  {/* <Button
                     variant="outline"
                     size="sm"
                     onClick={() =>
                       toast("Edit functionality will be added next.")
                     }
+                  >
+                    <Pencil className="size-4" />
+                    Edit
+                  </Button> */}
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditingBook({ ...book })}
                   >
                     <Pencil className="size-4" />
                     Edit
@@ -297,6 +370,115 @@ export default function MyBooksPage() {
           ))}
         </div>
       )}
+
+      {/* Edit Book Modal */}
+      <Dialog
+        open={!!editingBook}
+        onOpenChange={(open) => {
+          if (!open && !updating) {
+            setEditingBook(null);
+          }
+        }}
+      >
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Edit Book</DialogTitle>
+            <DialogDescription>
+              Update your book information below.
+            </DialogDescription>
+          </DialogHeader>
+
+          {editingBook && (
+            <form onSubmit={handleUpdate} className="space-y-4">
+              <div className="space-y-2">
+                <Label>Book Title</Label>
+                <Input
+                  value={editingBook.title || ""}
+                  onChange={(e) =>
+                    setEditingBook({
+                      ...editingBook,
+                      title: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Author</Label>
+                <Input
+                  value={editingBook.author || ""}
+                  onChange={(e) =>
+                    setEditingBook({
+                      ...editingBook,
+                      author: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Category</Label>
+                <Input
+                  value={editingBook.category || ""}
+                  onChange={(e) =>
+                    setEditingBook({
+                      ...editingBook,
+                      category: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Cover Image URL</Label>
+                <Input
+                  value={editingBook.cover || ""}
+                  onChange={(e) =>
+                    setEditingBook({
+                      ...editingBook,
+                      cover: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Description</Label>
+                <Textarea
+                  value={editingBook.description || ""}
+                  onChange={(e) =>
+                    setEditingBook({
+                      ...editingBook,
+                      description: e.target.value,
+                    })
+                  }
+                  rows={4}
+                  required
+                />
+              </div>
+
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEditingBook(null)}
+                  disabled={updating}
+                >
+                  Cancel
+                </Button>
+
+                <Button type="submit" disabled={updating}>
+                  {updating ? "Saving..." : "Save Changes"}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
